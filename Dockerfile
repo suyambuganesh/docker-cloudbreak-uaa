@@ -1,4 +1,4 @@
-FROM java:openjdk-8u66-jre
+FROM openjdk:8u141-jre
 MAINTAINER Hortonworks
 
 ENV UAA_CONFIG_PATH /uaa
@@ -18,10 +18,14 @@ RUN mkdir /tomcat
 RUN mv apache-tomcat-8.0.28/* /tomcat
 RUN rm -rf /tomcat/webapps/*
 
-ADD cloudfoundry-identity-uaa-2.7.1.war /tomcat/webapps/
-RUN mv /tomcat/webapps/cloudfoundry-identity-uaa-2.7.1.war /tomcat/webapps/ROOT.war
+ADD cloudfoundry-identity-uaa-4.5.0.war /tomcat/webapps/
+RUN mv /tomcat/webapps/cloudfoundry-identity-uaa-4.5.0.war /tomcat/webapps/ROOT.war
 
 #VOLUME ["/uaa"]
+
+# add jmx exporter
+ADD https://s3.eu-central-1.amazonaws.com/hortonworks-prometheus/jmx_prometheus_javaagent-0.10.jar /jmx_prometheus_javaagent.jar
+ADD jmx-config.yaml /jmx-config.yaml
 
 EXPOSE 8080
 
